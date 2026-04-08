@@ -1,15 +1,14 @@
-using EmirOtomotiv.Core.Application.Common.Interfaces;
 using EmirOtomotiv.Core.Application.Features.Products.Commands.Create;
 using EmirOtomotiv.Core.Application.Features.Products.Commands.Delete;
+using EmirOtomotiv.Core.Application.Features.Products.Commands.DeleteImage;
+using EmirOtomotiv.Core.Application.Features.Products.Commands.SetPrimaryImage;
 using EmirOtomotiv.Core.Application.Features.Products.Commands.Update;
+using EmirOtomotiv.Core.Application.Features.Products.Commands.UploadImages;
 using EmirOtomotiv.Core.Application.Features.Products.Queries.Get;
 using EmirOtomotiv.Core.Application.Features.Products.Queries.GetById;
-using EmirOtomotiv.Core.Application.Repositories.Products;
-using EmirOtomotiv.Core.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace EmirOtomotiv.Presentation.Api.Controllers;
 
@@ -18,24 +17,8 @@ namespace EmirOtomotiv.Presentation.Api.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IProductReadRepository _productReadRepository;
-    private readonly IProductWriteRepository _productWriteRepository;
-    private readonly IProductImageWriteRepository _imageWriteRepository;
-    private readonly IFileStorageService _fileStorage;
 
-    public ProductController(
-        IMediator mediator,
-        IProductReadRepository productReadRepository,
-        IProductWriteRepository productWriteRepository,
-        IProductImageWriteRepository imageWriteRepository,
-        IFileStorageService fileStorage)
-    {
-        _mediator = mediator;
-        _productReadRepository = productReadRepository;
-        _productWriteRepository = productWriteRepository;
-        _imageWriteRepository = imageWriteRepository;
-        _fileStorage = fileStorage;
-    }
+    public ProductController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
     public async Task<IActionResult> Get()
@@ -80,68 +63,25 @@ public class ProductController : ControllerBase
         if (files == null || files.Count == 0)
             return BadRequest("Dosya seçilmedi.");
 
-        var product = await _productReadRepository.GetByIdAsync(id);
-        bool hasPrimary = product.ProductImages?.Any(i => i.PrimaryImage) ?? false;
+        var fileList = files
+            .Where(f => f.Length > 0)
+            .Select(f => (f.OpenReadStream(), f.FileName))
+            .ToList<(Stream Stream, string FileName)>();
 
-        var created = new List<object>();
-
-        foreach (var file in files)
+        var result = await _mediator.Send(new UploadProductImagesRequest
         {
-            if (file.Length == 0) continue;
+            ProductId = id,
+            Files     = fileList,
+        });
 
-            var url = await _fileStorage.SaveAsync(file.OpenReadStream(), file.FileName, "products");
-
-            var image = new ProductImage
-            {
-                ImageUrl = url,
-                PrimaryImage = !hasPrimary,
-            };
-
-            product.ProductImages ??= [];
-            product.ProductImages.Add(image);
-            hasPrimary = true;
-        }
-
-        _productWriteRepository.Update(product);
-        await _productWriteRepository.SaveChangesAsync();
-
-        // Return the newly saved images (with their IDs)
-        var savedImages = product.ProductImages!
-            .Where(i => created.Count == 0 || true)
-            .Select(i => new { id = i.Id, imageUrl = i.ImageUrl, primaryImage = i.PrimaryImage })
-            .ToList();
-
-        return Ok(savedImages);
+        return Ok(result);
     }
 
     [Authorize]
     [HttpDelete("{id}/images/{imageId}")]
     public async Task<IActionResult> DeleteImage(string id, string imageId)
     {
-        var product = await _productReadRepository.GetByIdAsync(id);
-        var image = product.ProductImages?.FirstOrDefault(i => i.Id == Guid.Parse(imageId));
-
-        if (image is null) return NotFound();
-
-        await _fileStorage.DeleteAsync(image.ImageUrl);
-        await _imageWriteRepository.DeleteById(imageId);
-        await _imageWriteRepository.SaveChangesAsync();
-
-        // If deleted image was primary, promote the next one
-        if (image.PrimaryImage)
-        {
-            var remaining = product.ProductImages!
-                .Where(i => i.Id != Guid.Parse(imageId))
-                .FirstOrDefault();
-
-            if (remaining is not null)
-            {
-                remaining.PrimaryImage = true;
-                _imageWriteRepository.Update(remaining);
-                await _imageWriteRepository.SaveChangesAsync();
-            }
-        }
-
+        await _mediator.Send(new DeleteProductImageRequest { ProductId = id, ImageId = imageId });
         return NoContent();
     }
 
@@ -149,18 +89,7 @@ public class ProductController : ControllerBase
     [HttpPut("{id}/images/{imageId}/primary")]
     public async Task<IActionResult> SetPrimaryImage(string id, string imageId)
     {
-        var product = await _productReadRepository.GetByIdAsync(id);
-
-        if (product.ProductImages == null || product.ProductImages.Count == 0)
-            return NotFound();
-
-        foreach (var img in product.ProductImages)
-        {
-            img.PrimaryImage = img.Id == Guid.Parse(imageId);
-            _imageWriteRepository.Update(img);
-        }
-
-        await _imageWriteRepository.SaveChangesAsync();
+        await _mediator.Send(new SetPrimaryImageRequest { ProductId = id, ImageId = imageId });
         return NoContent();
     }
 }

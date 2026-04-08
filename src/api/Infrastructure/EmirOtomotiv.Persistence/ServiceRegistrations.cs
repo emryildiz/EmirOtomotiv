@@ -15,6 +15,8 @@ using EmirOtomotiv.Persistence.Repositories.Contacts;
 using EmirOtomotiv.Persistence.Repositories.Products;
 using EmirOtomotiv.Persistence.Repositories.Users;
 using EmirOtomotiv.Persistence.Repositories.Vehicles;
+using EmirOtomotiv.Persistence.Repositories.Visits;
+using EmirOtomotiv.Core.Application.Repositories.Visits;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EmirOtomotiv.Persistence;
@@ -42,5 +44,8 @@ public static class ServiceRegistrations
        services.AddScoped<IAboutUsWriteRepository, AboutUsWriteRepository>();
 
        services.AddScoped<IProductImageWriteRepository, ProductImageWriteRepository>();
+
+       services.AddScoped<IVisitReadRepository, VisitReadRepository>();
+       services.AddScoped<IVisitWriteRepository, VisitWriteRepository>();
     }
 }

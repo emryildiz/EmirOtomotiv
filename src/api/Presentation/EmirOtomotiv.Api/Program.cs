@@ -55,6 +55,8 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddPersistenceServices();
 builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+builder.Services.AddScoped<IGeoService, GeoService>();
+builder.Services.AddHttpClient("geo");
 
 // Allow larger multipart bodies for image uploads (up to 50 MB)
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(o =>

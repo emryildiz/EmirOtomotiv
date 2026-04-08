@@ -22,6 +22,8 @@ public class EmirOtomotivDbContext : DbContext
 
     public DbSet<AboutUs> AboutUs { get; set; }
 
+    public DbSet<Visit> Visits { get; set; }
+
     public EmirOtomotivDbContext(DbContextOptions options) : base(options)
     {
 
