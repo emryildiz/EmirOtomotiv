@@ -3,5 +3,11 @@ Allow: /
 
 Disallow: /admin
 Disallow: /admin/
+Disallow: /admin/urunler
+Disallow: /admin/kategoriler
+Disallow: /admin/araclar
+Disallow: /admin/hakkimizda
+Disallow: /admin/iletisim
+Disallow: /login
 
 Sitemap: https://emirotobusparca.com/sitemap.xml
