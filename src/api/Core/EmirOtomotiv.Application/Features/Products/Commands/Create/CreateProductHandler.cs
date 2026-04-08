@@ -1,5 +1,6 @@
-using AutoMapper;
+using Core.EmirOtomotiv.Application.Repositories.Categories;
 using EmirOtomotiv.Core.Application.Repositories.Products;
+using EmirOtomotiv.Core.Application.Repositories.Vehicles;
 using EmirOtomotiv.Core.Domain.Entities;
 using MediatR;
 
@@ -8,19 +9,33 @@ namespace EmirOtomotiv.Core.Application.Features.Products.Commands.Create;
 public class CreateProductHandler : IRequestHandler<CreateProductRequest>
 {
     private readonly IProductWriteRepository _writeRepository;
-    private readonly IMapper _mapper;
+    private readonly IVehicleReadRepository _vehicleReadRepository;
+    private readonly ICategoryReadRepository _categoryReadRepository;
 
-    public CreateProductHandler(IMapper mapper, IProductWriteRepository writeRepository)
+    public CreateProductHandler(
+        IProductWriteRepository writeRepository,
+        IVehicleReadRepository vehicleReadRepository,
+        ICategoryReadRepository categoryReadRepository)
     {
-        _mapper = mapper;
         _writeRepository = writeRepository;
+        _vehicleReadRepository = vehicleReadRepository;
+        _categoryReadRepository = categoryReadRepository;
     }
 
     public async Task Handle(CreateProductRequest request, CancellationToken cancellationToken)
     {
-        Product product = this._mapper.Map<Product>(request);
+        var vehicle = await _vehicleReadRepository.GetByIdAsync(request.VehicleId);
+        var category = await _categoryReadRepository.GetByIdAsync(request.CategoryId);
 
-        await this._writeRepository.AddAsync(product);
-        await this._writeRepository.SaveChangesAsync();
+        var product = new Product
+        {
+            Name = request.Name,
+            Description = request.Description,
+            Vehicle = vehicle,
+            Category = category,
+        };
+
+        await _writeRepository.AddAsync(product);
+        await _writeRepository.SaveChangesAsync();
     }
 }

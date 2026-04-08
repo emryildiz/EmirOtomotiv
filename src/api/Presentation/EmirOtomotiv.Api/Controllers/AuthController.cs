@@ -57,39 +57,26 @@ public class AuthController : ControllerBase
 
     private void SetRefreshToken(string refreshToken, DateTime expires)
     {
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = expires,
-            SameSite = SameSiteMode.Strict,
-            Secure = true 
-        };
-        Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        Response.Cookies.Append("refreshToken", refreshToken, CookieOptions(expires));
     }
 
     private void SetAccessToken(string token)
     {
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.UtcNow.AddMinutes(15),
-            SameSite = SameSiteMode.Strict,
-            Secure = true
-        };
-        Response.Cookies.Append("accessToken", token, cookieOptions);
+        Response.Cookies.Append("accessToken", token, CookieOptions(DateTime.UtcNow.AddMinutes(15)));
     }
 
     private void SetRole(string role)
     {
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.UtcNow.AddDays(7),
-            SameSite = SameSiteMode.Strict,
-            Secure = true
-        };
-        Response.Cookies.Append("role", role, cookieOptions);
+        Response.Cookies.Append("role", role, CookieOptions(DateTime.UtcNow.AddDays(7)));
     }
+
+    private static CookieOptions CookieOptions(DateTime expires) => new CookieOptions
+    {
+        HttpOnly = true,
+        Expires = expires,
+        SameSite = SameSiteMode.None,
+        Secure = true
+    };
 
     private void DeleteAccessToken()
     {

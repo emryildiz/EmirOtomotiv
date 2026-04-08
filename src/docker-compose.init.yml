@@ -1,0 +1,19 @@
+# Sadece bir kez çalıştırılır — ilk SSL sertifikasını almak için.
+# Kullanım: docker compose -f docker-compose.init.yml up --abort-on-container-exit
+# Port 80 boş olmalıdır (nginx/apache vs. durdurulmuş olmalı).
+
+services:
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+    command: >
+      certonly --standalone
+      -d emirotobusparca.com
+      -d www.emirotobusparca.com
+      --email admin@emirotobusparca.com
+      --agree-tos
+      --no-eff-email

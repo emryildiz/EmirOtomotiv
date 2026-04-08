@@ -1,10 +1,13 @@
 using AutoMapper;
+using EmirOtomotiv.Core.Application.Features.About.Queries.Get;
 using EmirOtomotiv.Core.Application.Features.Auth.Queries.GetMe;
 using EmirOtomotiv.Core.Application.Features.Categories.Commands.Create;
-using EmirOtomotiv.Core.Application.Features.Products.Commands.Create;
+using EmirOtomotiv.Core.Application.Features.Categories.Queries.Get;
+using EmirOtomotiv.Core.Application.Features.Contacts.Queries.GetContact;
 using EmirOtomotiv.Core.Application.Features.Products.Queries.Get;
 using EmirOtomotiv.Core.Application.Features.Products.Queries.GetById;
 using EmirOtomotiv.Core.Application.Features.Vehicles.Commands.Create;
+using EmirOtomotiv.Core.Application.Features.Vehicles.Queries.Get;
 using EmirOtomotiv.Core.Domain.DTOs;
 using EmirOtomotiv.Core.Domain.Entities;
 
@@ -16,14 +19,19 @@ public class Mapping : Profile
         //Products
         this.CreateMap<Product, GetProductResponse>();
         this.CreateMap<Product, GetProductByIdResponse>();
-        this.CreateMap<CreateProductRequest, Product>();
-
+        this.CreateMap<ProductImage, ProductImageDto>();
         this.CreateMap<Vehicle, VehicleDto>();
+        this.CreateMap<Vehicle, GetVehiclesResponse>();
         this.CreateMap<CreateVehicleRequest, Vehicle>();
 
         this.CreateMap<Category, CategoryDto>();
         this.CreateMap<CreateCategoryRequest, Category>();
+        this.CreateMap<Category, GetCategoriesResponse>();
 
         this.CreateMap<User, GetMeResponse>();
+
+        this.CreateMap<Contact, GetContactResponse>();
+
+        this.CreateMap<AboutUs, GetAboutResponse>();
     }
 }

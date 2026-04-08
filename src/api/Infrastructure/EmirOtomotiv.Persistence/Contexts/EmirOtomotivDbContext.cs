@@ -18,6 +18,10 @@ public class EmirOtomotivDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Contact> Contacts { get; set;}
+
+    public DbSet<AboutUs> AboutUs { get; set; }
+
     public EmirOtomotivDbContext(DbContextOptions options) : base(options)
     {
 

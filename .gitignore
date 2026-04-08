@@ -131,3 +131,19 @@ build/
 .next/
 out/
 .cache/
+
+# Claude Code
+src/.claude/
+src/CLAUDE.md
+
+# Docker / deployment
+src/.env
+src/.env.prod
+src/certbot/
+
+# API secrets (connection strings, JWT keys)
+src/api/**/appsettings.Development.json
+src/api/**/appsettings.Local.json
+
+# Logs
+src/api/**/logs/

@@ -1,4 +1,3 @@
-using EmirOtomotiv.Core.Domain.Entities;
 using MediatR;
 
 namespace EmirOtomotiv.Core.Application.Features.Products.Commands.Create;
@@ -6,12 +5,10 @@ namespace EmirOtomotiv.Core.Application.Features.Products.Commands.Create;
 public class CreateProductRequest : IRequest
 {
     public required string Name { get; set; }
-    
-    public string Description { get; set; }
 
-    public Vehicle Vehicle { get; set; } = default!;
+    public string? Description { get; set; }
 
-    public Category Category { get; set; } = default!;
+    public required string VehicleId { get; set; }
 
-    public List<ProductImage> ProductImages { get; set; }
+    public required string CategoryId { get; set; }
 }

@@ -1,12 +1,17 @@
+using System.Net.Security;
 using System.Reflection;
 using Core.EmirOtomotiv.Application.Repositories.Categories;
 using EmirOtomotiv.Core.Application.Repositories;
+using EmirOtomotiv.Core.Application.Repositories.About;
 using EmirOtomotiv.Core.Application.Repositories.Categories;
+using EmirOtomotiv.Core.Application.Repositories.Contacts;
 using EmirOtomotiv.Core.Application.Repositories.Products;
 using EmirOtomotiv.Core.Application.Repositories.Users;
 using EmirOtomotiv.Core.Application.Repositories.Vehicles;
 using EmirOtomotiv.Persistence.Repositories;
+using EmirOtomotiv.Persistence.Repositories.About;
 using EmirOtomotiv.Persistence.Repositories.Categories;
+using EmirOtomotiv.Persistence.Repositories.Contacts;
 using EmirOtomotiv.Persistence.Repositories.Products;
 using EmirOtomotiv.Persistence.Repositories.Users;
 using EmirOtomotiv.Persistence.Repositories.Vehicles;
@@ -29,5 +34,11 @@ public static class ServiceRegistrations
 
        services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
        services.AddScoped<ICategoryWriteRepository, CategoryWriteRepository>();
+
+       services.AddScoped<IContactReadRepository, ContactReadRepository>();
+       services.AddScoped<IContactWriteRepository, ContactWriteRepository>();
+
+       services.AddScoped<IAboutUsReadRepository, AboutUsReadRepository>();
+       services.AddScoped<IAboutUsWriteRepository, AboutUsWriteRepository>();
     }
 }

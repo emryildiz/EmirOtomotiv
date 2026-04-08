@@ -78,6 +78,10 @@ builder.Services.AddHttpLogging(logging =>
                                     logging.ResponseBodyLogLimit = 4096;
                                 });
 
+var allowedOrigins = builder.Configuration["CorsOrigins"]?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+    ?? new[] { "http://localhost:3000" };
+builder.Services.AddCors(x => x.AddDefaultPolicy(y => y.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(allowedOrigins)));
+
 var app = builder.Build();
 
 // Initialize the database and ensure the latest migrations/data are applied
@@ -88,7 +92,7 @@ try
         var services = scope.ServiceProvider;
 
         IPasswordHasher passwordHashService = services.GetRequiredService<IPasswordHasher>();
-        
+
         DbInitializer.Initialize(app.Services, passwordHashService);
     }
 }
@@ -108,11 +112,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 app.UseHttpLogging();
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
-app.UseAuthorization();
+app.UseCors();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

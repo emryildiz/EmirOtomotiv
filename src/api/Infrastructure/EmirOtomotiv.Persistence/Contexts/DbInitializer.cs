@@ -13,8 +13,55 @@ public static class DbInitializer
 
         context.Database.Migrate();
 
-        if (context.Categories.Any() 
-            || context.Vehicles.Any() 
+        // Seed product images independently so they can be added to existing products
+        if (!context.ProductImages.Any() && context.Products.Any())
+        {
+            var existingProducts = context.Products.ToList();
+            var seedImages = new List<ProductImage>();
+
+            for (int i = 0; i < existingProducts.Count; i++)
+            {
+                int s = (i + 1) * 10;
+                seedImages.Add(new ProductImage { Id = Guid.NewGuid(), ImageUrl = $"https://picsum.photos/seed/{s}/800/600", PrimaryImage = true, CreatedAt = DateTime.UtcNow });
+                seedImages.Add(new ProductImage { Id = Guid.NewGuid(), ImageUrl = $"https://picsum.photos/seed/{s + 1}/800/600", PrimaryImage = false, CreatedAt = DateTime.UtcNow });
+                seedImages.Add(new ProductImage { Id = Guid.NewGuid(), ImageUrl = $"https://picsum.photos/seed/{s + 2}/800/600", PrimaryImage = false, CreatedAt = DateTime.UtcNow });
+
+                existingProducts[i].ProductImages = seedImages.Skip(i * 3).Take(3).ToList();
+            }
+
+            context.ProductImages.AddRange(seedImages);
+            context.SaveChanges();
+        }
+
+        if (!context.Contacts.Any())
+        {
+            context.Contacts.Add(new Contact
+            {
+                Id = Guid.NewGuid(),
+                Description = "Prestij, Sultan ve Isuzu araçları için orijinal kalite yedek parça tedarikçisi. 15 yılı aşkın sektör deneyimimizle müşterilerimize en hızlı ve güvenilir hizmeti sunmaktayız.",
+                Adress = "Organize Sanayi Bölgesi, Metalürji Cad. No:42, Şahinbey / Gaziantep",
+                PhoneNumber = "+90 342 555 08 19",
+                WorkingHours = "Pazartesi - Cumartesi: 08:30 - 18:30",
+                Mail = "info@emirotomotiv.com",
+                CreatedAt = DateTime.UtcNow,
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.AboutUs.Any())
+        {
+            context.AboutUs.Add(new AboutUs
+            {
+                Id = Guid.NewGuid(),
+                Description = "Emir Otomotiv, 2008 yılında Gaziantep'te kurulmuş olup Prestij, Sultan ve Isuzu araç markalarına özel yedek parça üretimi ve tedariki konusunda öncü bir firmadır. Kalite belgeleri ve ISO standartlarına uygun üretim süreçlerimizle yurt içi ve yurt dışı pazarda güvenilir bir tedarikçi konumundayız. Deneyimli ekibimiz, müşterilerimize satış sonrası teknik destek ve danışmanlık hizmeti de sunmaktadır.",
+                ImageUrl = "https://images.unsplash.com/photo-1632823471406-4c5c7e4c6f24?w=900&auto=format&fit=crop",
+                CreatedAt = DateTime.UtcNow,
+            });
+            context.SaveChanges();
+        }
+
+        if (context.Categories.Any()
+            || context.Vehicles.Any()
             || context.Products.Any()
             || context.Users.Any())
         {
@@ -56,6 +103,19 @@ public static class DbInitializer
         };
 
         context.Products.AddRange(products);
+        context.SaveChanges();
+
+        var images = new List<ProductImage>();
+        for (int i = 0; i < products.Length; i++)
+        {
+            int seed = (i + 1) * 10;
+            images.Add(new ProductImage { Id = Guid.NewGuid(), ImageUrl = $"https://picsum.photos/seed/{seed}/800/600", PrimaryImage = true, CreatedAt = DateTime.UtcNow });
+            images.Add(new ProductImage { Id = Guid.NewGuid(), ImageUrl = $"https://picsum.photos/seed/{seed + 1}/800/600", PrimaryImage = false, CreatedAt = DateTime.UtcNow });
+            images.Add(new ProductImage { Id = Guid.NewGuid(), ImageUrl = $"https://picsum.photos/seed/{seed + 2}/800/600", PrimaryImage = false, CreatedAt = DateTime.UtcNow });
+            products[i].ProductImages = images.Skip(i * 3).Take(3).ToList();
+        }
+
+        context.ProductImages.AddRange(images);
         context.SaveChanges();
 
         var users = new List<User>()

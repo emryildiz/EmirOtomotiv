@@ -1,5 +1,9 @@
 using EmirOtomotiv.Core.Application.Features.Vehicles.Commands.Create;
+using EmirOtomotiv.Core.Application.Features.Vehicles.Commands.Delete;
+using EmirOtomotiv.Core.Application.Features.Vehicles.Commands.Update;
+using EmirOtomotiv.Core.Application.Features.Vehicles.Queries.Get;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmirOtomotiv.Presentation.Api.Controllers;
@@ -10,16 +14,34 @@ public class VehicleController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public VehicleController(IMediator mediator)
+    public VehicleController(IMediator mediator) => _mediator = mediator;
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+        => Ok(await _mediator.Send(new GetVehiclesRequest()));
+
+    [Authorize]
+    [HttpPost("create")]
+    public async Task<IActionResult> Create([FromBody] CreateVehicleRequest request)
     {
-        _mediator = mediator;
+        await _mediator.Send(request);
+        return Created();
     }
 
-    [HttpPost("create")]
-    public async Task Create([FromBody] CreateVehicleRequest request)
+    [Authorize]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(string id, [FromBody] UpdateVehicleRequest request)
     {
-        await this._mediator.Send(request);
+        request.Id = id;
+        await _mediator.Send(request);
+        return NoContent();
+    }
 
-        this.Created();
+    [Authorize]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _mediator.Send(new DeleteVehicleRequest { Id = id });
+        return NoContent();
     }
 }

@@ -15,4 +15,6 @@ public class GetProductResponse
     public VehicleDto Vehicle { get; set; }
 
     public CategoryDto Category { get; set; }
+
+    public List<ProductImageDto>? ProductImages { get; set; }
 }
