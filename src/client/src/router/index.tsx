@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer'
 import { lazy, Suspense } from 'react'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { AdminLayout } from '@/features/admin/components/AdminLayout'
+import { useTrackVisit } from '@/features/visits/hooks/useTrackVisit'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
 const ProductsPage = lazy(() => import('@/pages/ProductsPage'))
@@ -21,6 +22,8 @@ const AdminContact = lazy(() => import('@/features/admin/pages/AdminContact'))
 const AdminVisits = lazy(() => import('@/features/admin/pages/AdminVisits'))
 
 function RootLayout() {
+  useTrackVisit()
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <ScrollRestoration />
