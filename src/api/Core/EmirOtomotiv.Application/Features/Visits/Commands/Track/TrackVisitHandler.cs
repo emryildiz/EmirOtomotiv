@@ -1,3 +1,4 @@
+#nullable enable
 using EmirOtomotiv.Core.Application.Common.Interfaces;
 using EmirOtomotiv.Core.Application.Repositories.Visits;
 using EmirOtomotiv.Core.Domain.Entities;

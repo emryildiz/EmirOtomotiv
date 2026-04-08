@@ -1,3 +1,4 @@
+#nullable enable
 using MediatR;
 
 namespace EmirOtomotiv.Core.Application.Features.Visits.Commands.Track;

@@ -2,20 +2,24 @@ import { Link } from 'react-router-dom'
 import { useProducts } from '@/features/products/hooks/useProducts'
 import { useCategories } from '@/features/categories/hooks/useCategories'
 import { useVehicles } from '@/features/vehicles/hooks/useVehicles'
+import { useVisitsStats } from '@/features/visits/hooks/useVisitsStats'
 import styles from './AdminPage.module.css'
 
 export default function AdminDashboard() {
   const { data: products } = useProducts()
   const { data: categories } = useCategories()
   const { data: vehicles } = useVehicles()
+  const { data: visits } = useVisitsStats({ days: 30 })
 
   const stats = [
+    { label: 'Aylık Ziyaret', value: visits?.total ?? '—', to: '/admin/ziyaretciler' },
     { label: 'Ürünler', value: products?.length ?? '—', to: '/admin/urunler' },
     { label: 'Kategoriler', value: categories?.length ?? '—', to: '/admin/kategoriler' },
     { label: 'Araçlar', value: vehicles?.length ?? '—', to: '/admin/araclar' },
   ]
 
   const shortcuts = [
+    { label: 'Ziyaretçi Logları', to: '/admin/ziyaretciler' },
     { label: 'Ürün Yönetimi', to: '/admin/urunler' },
     { label: 'Kategori Yönetimi', to: '/admin/kategoriler' },
     { label: 'Araç Yönetimi', to: '/admin/araclar' },

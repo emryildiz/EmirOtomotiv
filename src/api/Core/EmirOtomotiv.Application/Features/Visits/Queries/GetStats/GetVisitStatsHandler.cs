@@ -1,3 +1,4 @@
+#nullable enable
 using EmirOtomotiv.Core.Application.Repositories.Visits;
 using MediatR;
 

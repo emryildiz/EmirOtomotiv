@@ -1,3 +1,4 @@
+#nullable enable
 namespace EmirOtomotiv.Core.Application.Common.Interfaces;
 
 public interface IGeoService

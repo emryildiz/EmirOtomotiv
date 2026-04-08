@@ -8,6 +8,7 @@ const links = [
   { to: '/admin/urunler', label: 'Ürünler', icon: '⊞' },
   { to: '/admin/kategoriler', label: 'Kategoriler', icon: '◈' },
   { to: '/admin/araclar', label: 'Araçlar', icon: '◉' },
+  { to: '/admin/ziyaretciler', label: 'Ziyaretçiler', icon: '👁' },
   { to: '/admin/hakkimizda', label: 'Hakkımızda', icon: '◎' },
   { to: '/admin/iletisim', label: 'İletişim', icon: '◌' },
 ]
