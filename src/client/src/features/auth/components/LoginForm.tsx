@@ -15,7 +15,11 @@ export function LoginForm() {
     e.preventDefault()
     login(
       { username, password, rememberMe },
-      { onSuccess: (data) => navigate(data.role === 'admin' ? '/admin' : '/') },
+      { onSuccess: (data) => {
+          localStorage.setItem('token', data.token)
+          navigate(data.role === 'admin' ? '/admin' : '/')
+        }
+      },
     )
   }
 

@@ -6,7 +6,10 @@ import styles from './LoginPage.module.css'
 export default function LoginPage() {
   const { data: user, isLoading } = useMe()
 
-  if (!isLoading && user) return <Navigate to="/" replace />
+  if (!isLoading && user) {
+    if (user.role === 'admin') return <Navigate to="/admin" replace />
+    return <Navigate to="/" replace />
+  }
 
   return (
     <div className={styles.wrapper}>

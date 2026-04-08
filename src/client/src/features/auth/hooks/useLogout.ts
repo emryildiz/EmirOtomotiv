@@ -7,6 +7,7 @@ export function useLogout() {
   return useMutation({
     mutationFn: authService.logout,
     onSuccess: () => {
+      localStorage.removeItem('token')
       queryClient.clear()
     },
   })
