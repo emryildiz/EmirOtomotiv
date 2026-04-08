@@ -120,8 +120,8 @@ public static class DbInitializer
 
         var users = new List<User>()
         {
-            new User() { Username = "emre", PasswordHash = passwordHasher.Hash("1234"), IsActive = true, Role = "admin", CreatedAt = DateTime.UtcNow },
-            new User() { Username = "user", PasswordHash = passwordHasher.Hash("1234"), IsActive = true, Role = "user", CreatedAt = DateTime.UtcNow }
+            new User() { Username = "emre", PasswordHash = passwordHasher.Hash("EmirOto@2024!"), IsActive = true, Role = "admin", CreatedAt = DateTime.UtcNow },
+            new User() { Username = "user", PasswordHash = passwordHasher.Hash("User@Oto#2024"), IsActive = true, Role = "user", CreatedAt = DateTime.UtcNow }
         };
         context.Users.AddRange(users);
         context.SaveChanges();
