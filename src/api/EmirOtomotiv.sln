@@ -15,13 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmirOtomotiv.Infrastructure
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmirOtomotiv.persistence", "EmirOtomotiv.persistence", "{6A2572D1-3F1A-1F49-0DED-6BF8D3E71C6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmirOtomotiv.Persistence", "Infrastructure\EmirOtomotiv.persistence\EmirOtomotiv.Persistence.csproj", "{A8CE0D46-FF11-489D-8C2A-EC70E015CDAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmirOtomotiv.Persistence", "Infrastructure\EmirOtomotiv.Persistence\EmirOtomotiv.Persistence.csproj", "{A8CE0D46-FF11-489D-8C2A-EC70E015CDAB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{06CFFD70-14AA-A959-A3BA-1B15D094E3B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Emirotomotiv.api", "Emirotomotiv.api", "{49B6F505-7966-FC76-EA4F-115573C6D5F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmirOtomotiv.Api", "Presentation\Emirotomotiv.api\EmirOtomotiv.Api.csproj", "{3EE913FC-3239-432F-9CB1-2472BAB2B0B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmirOtomotiv.Api", "Presentation\EmirOtomotiv.Api\EmirOtomotiv.Api.csproj", "{3EE913FC-3239-432F-9CB1-2472BAB2B0B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,14 +5,14 @@ COPY EmirOtomotiv.sln .
 COPY Core/EmirOtomotiv.Domain/EmirOtomotiv.Domain.csproj             Core/EmirOtomotiv.Domain/
 COPY Core/EmirOtomotiv.Application/EmirOtomotiv.Application.csproj   Core/EmirOtomotiv.Application/
 COPY Infrastructure/EmirOtomotiv.Infrastructure/EmirOtomotiv.Infrastructure.csproj Infrastructure/EmirOtomotiv.Infrastructure/
-COPY Infrastructure/EmirOtomotiv.persistence/EmirOtomotiv.Persistence.csproj       Infrastructure/EmirOtomotiv.persistence/
-COPY Presentation/Emirotomotiv.api/EmirOtomotiv.Api.csproj            Presentation/Emirotomotiv.api/
+COPY Infrastructure/EmirOtomotiv.Persistence/EmirOtomotiv.Persistence.csproj       Infrastructure/EmirOtomotiv.Persistence/
+COPY Presentation/EmirOtomotiv.Api/EmirOtomotiv.Api.csproj            Presentation/EmirOtomotiv.Api/
 
 RUN dotnet restore
 
 COPY . .
 
-RUN dotnet publish Presentation/Emirotomotiv.api/EmirOtomotiv.Api.csproj \
+RUN dotnet publish Presentation/EmirOtomotiv.Api/EmirOtomotiv.Api.csproj \
     -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
