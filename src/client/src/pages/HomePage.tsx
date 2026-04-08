@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useProducts } from '@/features/products/hooks/useProducts'
 import { ProductCard } from '@/features/products/components/ProductCard'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { SEOMeta } from '@/components/SEOMeta'
 import styles from './HomePage.module.css'
 
 export default function HomePage() {
@@ -10,6 +11,12 @@ export default function HomePage() {
 
   return (
     <div>
+      <SEOMeta
+        title="Emir Otomotiv – Otobüs Yedek Parça İmalatı | emirotobusparca.com"
+        description="Prestij, Sultan ve Isuzu otobüsleri için orijinal kalite yedek parça imalatı. Depo kapağı, bagaj kapağı, akü kapağı ve karoser parçaları stoktan hızlı teslimat."
+        canonical="/"
+        keywords="otobüs yedek parça, yedek parça imalatı, otobüs karoser parça, depo kapağı, bagaj kapağı, akü kapağı, Prestij otobüs, Sultan otobüs, Isuzu otobüs yedek parça"
+      />
       {/* Hero */}
       <section className={styles.hero}>
         <div className="container">

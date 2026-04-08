@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useProduct } from '@/features/products/hooks/useProduct'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { SEOMeta } from '@/components/SEOMeta'
 import type { ProductImage } from '@/features/products/types'
 import styles from './ProductDetailPage.module.css'
 
@@ -32,8 +34,53 @@ export default function ProductDetailPage() {
   const images = product.productImages ?? []
   const displayUrl = activeImage ?? (images.length > 0 ? getPrimaryImage(images).imageUrl : null)
 
+  const vehicleInfo = product.vehicle
+    ? `${product.vehicle.name ?? ''} ${product.vehicle.model ?? ''}`.trim()
+    : ''
+  const seoDescription = [
+    product.name,
+    vehicleInfo ? `${vehicleInfo} için yedek parça` : 'otobüs yedek parça',
+    product.description ?? '',
+    'Ürün No:',
+    product.productNumber,
+  ]
+    .filter(Boolean)
+    .join(' – ')
+    .slice(0, 160)
+
   return (
     <section className="section">
+      <SEOMeta
+        title={`${product.name} – ${vehicleInfo || 'Otobüs Yedek Parça'}`}
+        description={seoDescription}
+        canonical={`/urunler/${product.id}`}
+        keywords={`${product.name}, ${vehicleInfo} yedek parça, otobüs yedek parça, ${product.category?.name ?? ''}`}
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": product.name,
+          "description": product.description ?? seoDescription,
+          "sku": product.productNumber,
+          "image": displayUrl ?? undefined,
+          "brand": { "@type": "Brand", "name": "Emir Otomotiv" },
+          "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "seller": { "@type": "Organization", "name": "Emir Otomotiv" }
+          }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://emirotobusparca.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Ürünler", "item": "https://emirotobusparca.com/urunler" },
+            { "@type": "ListItem", "position": 3, "name": product.name, "item": `https://emirotobusparca.com/urunler/${product.id}` }
+          ]
+        })}</script>
+      </Helmet>
       <div className="container">
         <Link to="/urunler" className={styles.back}>
           &larr; Ürünlere Dön
