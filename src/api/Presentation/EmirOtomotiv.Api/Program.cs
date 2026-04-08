@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using EmirOtomotiv.Infrastructure.Authentication;
 using EmirOtomotiv.Core.Application.Common.Interfaces;
 using EmirOtomotiv.Infrastructure;
+using EmirOtomotiv.Presentation.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,13 @@ builder.Services.AddOpenApi();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddPersistenceServices();
+builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+
+// Allow larger multipart bodies for image uploads (up to 50 MB)
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(o =>
+{
+    o.MultipartBodyLengthLimit = 50 * 1024 * 1024;
+});
 
 var connectionString = builder.Configuration.GetConnectionString("EmirOtomotivDb") 
     ?? "Host=localhost;Database=EmirOtomotivDb;Username=postgres;Password=postgres";
@@ -116,6 +124,8 @@ if (app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseStaticFiles();
 
 app.UseCors();
 

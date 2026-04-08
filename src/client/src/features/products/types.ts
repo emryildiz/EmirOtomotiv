@@ -1,6 +1,7 @@
 import type { VehicleDto, CategoryDto } from '@/types/api'
 
 export interface ProductImage {
+  id: string
   imageUrl: string
   primaryImage: boolean
 }

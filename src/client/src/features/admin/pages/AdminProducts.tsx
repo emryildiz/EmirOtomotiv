@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useProducts } from '@/features/products/hooks/useProducts'
-import { useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/features/products/hooks/useAdminProducts'
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  useDeleteProduct,
+  useUploadProductImages,
+  useDeleteProductImage,
+  useSetPrimaryImage,
+} from '@/features/products/hooks/useAdminProducts'
 import { useVehicles } from '@/features/vehicles/hooks/useVehicles'
 import { useCategories } from '@/features/categories/hooks/useCategories'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { Product } from '@/features/products/types'
 import styles from './AdminPage.module.css'
+import imageStyles from './AdminProductImages.module.css'
 
 const emptyForm = { name: '', description: '', vehicleId: '', categoryId: '' }
 
@@ -16,11 +25,15 @@ export default function AdminProducts() {
   const { mutate: create, isPending: creating } = useCreateProduct()
   const { mutate: update, isPending: updating } = useUpdateProduct()
   const { mutate: remove } = useDeleteProduct()
+  const { mutate: uploadImages, isPending: uploading } = useUploadProductImages()
+  const { mutate: deleteImage } = useDeleteProductImage()
+  const { mutate: setPrimary } = useSetPrimaryImage()
 
   const [form, setForm] = useState(emptyForm)
   const [editing, setEditing] = useState<Product | null>(null)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   function handleCreate() {
     if (!form.name.trim() || !form.vehicleId || !form.categoryId) return
@@ -37,7 +50,25 @@ export default function AdminProducts() {
     if (!editing) return
     update(
       { id: editing.id, data: { name, description } },
-      { onSuccess: () => setEditing(null) },
+      {
+        onSuccess: (_, vars) => {
+          // Refresh editing product from updated list
+          setEditing(prev => prev ? { ...prev, name: vars.data.name, description: vars.data.description ?? '' } : null)
+        },
+      },
+    )
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!editing || !e.target.files || e.target.files.length === 0) return
+    const files = Array.from(e.target.files)
+    uploadImages(
+      { productId: editing.id, files },
+      {
+        onSuccess: () => {
+          if (fileInputRef.current) fileInputRef.current.value = ''
+        },
+      },
     )
   }
 
@@ -48,6 +79,7 @@ export default function AdminProducts() {
       <h1 className={styles.title}>Ürünler</h1>
       <p className={styles.subtitle}>Tüm ürünleri görüntüleyin, düzenleyin veya silin.</p>
 
+      {/* Create form */}
       <div className={styles.form}>
         <h3 style={{ fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
           Yeni Ürün
@@ -89,11 +121,14 @@ export default function AdminProducts() {
         </div>
       </div>
 
+      {/* Edit form */}
       {editing && (
         <div className={styles.form}>
           <h3 style={{ fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
-            Ürün Düzenle
+            Ürün Düzenle — {editing.name}
           </h3>
+
+          {/* Basic fields */}
           <div className="form-group">
             <label className="form-label">Ad</label>
             <input className="form-input" value={name} onChange={e => setName(e.target.value)} />
@@ -116,13 +151,85 @@ export default function AdminProducts() {
               İptal
             </button>
           </div>
+
+          {/* Image management */}
+          <hr style={{ margin: '1.5rem 0', border: 'none', borderTop: '1px solid var(--color-border)' }} />
+          <p style={{ fontWeight: 600, color: 'var(--color-primary)', marginBottom: '1rem' }}>Resimler</p>
+
+          {/* Existing images */}
+          {editing.productImages && editing.productImages.length > 0 ? (
+            <div className={imageStyles.grid}>
+              {editing.productImages.map(img => (
+                <div key={img.id} className={`${imageStyles.item} ${img.primaryImage ? imageStyles.primary : ''}`}>
+                  <img
+                    src={getImageUrl(img.imageUrl) ?? ''}
+                    alt="ürün resmi"
+                    className={imageStyles.thumb}
+                  />
+                  <div className={imageStyles.actions}>
+                    {!img.primaryImage && (
+                      <button
+                        className={imageStyles.btnPrimary}
+                        title="Ana resim yap"
+                        onClick={() => setPrimary({ productId: editing.id, imageId: img.id })}
+                      >
+                        ★
+                      </button>
+                    )}
+                    {img.primaryImage && (
+                      <span className={imageStyles.primaryBadge}>Ana</span>
+                    )}
+                    <button
+                      className={imageStyles.btnDelete}
+                      title="Sil"
+                      onClick={() => {
+                        if (window.confirm('Resim silinsin mi?')) {
+                          deleteImage({ productId: editing.id, imageId: img.id })
+                          setEditing(prev =>
+                            prev
+                              ? { ...prev, productImages: prev.productImages?.filter(i => i.id !== img.id) ?? [] }
+                              : null
+                          )
+                        }
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '1rem' }}>Henüz resim yok.</p>
+          )}
+
+          {/* Upload new images */}
+          <div className={imageStyles.upload}>
+            <label className={imageStyles.uploadLabel}>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                className={imageStyles.fileInput}
+                onChange={handleFileChange}
+                disabled={uploading}
+              />
+              <span className={imageStyles.uploadBtn}>
+                {uploading ? 'Yükleniyor...' : '+ Resim Ekle'}
+              </span>
+            </label>
+            <p className={imageStyles.uploadHint}>JPG, PNG, WEBP — maks. 10 MB/dosya</p>
+          </div>
         </div>
       )}
 
+      {/* Product table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
             <tr>
+              <th>Resim</th>
               <th>Ürün Adı</th>
               <th>Ürün No</th>
               <th>Kategori</th>
@@ -132,27 +239,41 @@ export default function AdminProducts() {
           </thead>
           <tbody>
             {products?.length === 0 && (
-              <tr><td colSpan={5} className={styles.empty}>Ürün bulunamadı.</td></tr>
+              <tr><td colSpan={6} className={styles.empty}>Ürün bulunamadı.</td></tr>
             )}
-            {products?.map(p => (
-              <tr key={p.id}>
-                <td>{p.name}</td>
-                <td>{p.productNumber}</td>
-                <td>{p.category?.name ?? '—'}</td>
-                <td>{p.vehicle?.name ?? '—'}</td>
-                <td>
-                  <div className={styles.actions}>
-                    <button className={styles.btnEdit} onClick={() => startEdit(p)}>Düzenle</button>
-                    <button
-                      className={styles.btnDelete}
-                      onClick={() => window.confirm('Silinsin mi?') && remove(p.id)}
-                    >
-                      Sil
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {products?.map(p => {
+              const primary = p.productImages?.find(i => i.primaryImage) ?? p.productImages?.[0]
+              return (
+                <tr key={p.id}>
+                  <td>
+                    {primary ? (
+                      <img
+                        src={getImageUrl(primary.imageUrl) ?? ''}
+                        alt={p.name}
+                        style={{ width: 48, height: 36, objectFit: 'cover', borderRadius: 4 }}
+                      />
+                    ) : (
+                      <div style={{ width: 48, height: 36, background: '#f0f0f0', borderRadius: 4 }} />
+                    )}
+                  </td>
+                  <td>{p.name}</td>
+                  <td>{p.productNumber}</td>
+                  <td>{p.category?.name ?? '—'}</td>
+                  <td>{p.vehicle?.name ?? '—'}</td>
+                  <td>
+                    <div className={styles.actions}>
+                      <button className={styles.btnEdit} onClick={() => startEdit(p)}>Düzenle</button>
+                      <button
+                        className={styles.btnDelete}
+                        onClick={() => window.confirm('Silinsin mi?') && remove(p.id)}
+                      >
+                        Sil
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>

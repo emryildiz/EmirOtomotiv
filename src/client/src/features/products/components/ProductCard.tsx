@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Product } from '../types'
+import { getImageUrl } from '@/lib/imageUrl'
 import styles from './ProductCard.module.css'
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 function getPrimaryImage(product: Product): string | null {
   if (!product.productImages || product.productImages.length === 0) return null
   const primary = product.productImages.find(img => img.primaryImage)
-  return primary?.imageUrl ?? product.productImages[0].imageUrl
+  return getImageUrl(primary?.imageUrl ?? product.productImages[0].imageUrl)
 }
 
 export function ProductCard({ product }: Props) {

@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import type { Product } from '../types'
+import type { Product, ProductImage } from '../types'
 
 export interface CreateProductDto { name: string; description?: string; vehicleId: string; categoryId: string }
 export interface UpdateProductDto { name: string; description?: string }
@@ -19,4 +19,18 @@ export const productService = {
 
   delete: (id: string) =>
     api.delete(`/api/products/${id}`),
+
+  uploadImages: (productId: string, files: File[]) => {
+    const form = new FormData()
+    files.forEach(f => form.append('files', f))
+    return api.post<ProductImage[]>(`/api/products/${productId}/images`, form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then(r => r.data)
+  },
+
+  deleteImage: (productId: string, imageId: string) =>
+    api.delete(`/api/products/${productId}/images/${imageId}`),
+
+  setPrimaryImage: (productId: string, imageId: string) =>
+    api.put(`/api/products/${productId}/images/${imageId}/primary`),
 }

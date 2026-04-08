@@ -26,6 +26,8 @@ services:
         Host=postgres;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       JwtSettings__Secret: ${JWT_SECRET}
       CorsOrigins: https://emirotobusparca.com
+    volumes:
+      - uploads_data:/app/wwwroot/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,3 +61,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:

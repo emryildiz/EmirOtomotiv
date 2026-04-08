@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useProduct } from '@/features/products/hooks/useProduct'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { SEOMeta } from '@/components/SEOMeta'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductImage } from '@/features/products/types'
 import styles from './ProductDetailPage.module.css'
 
@@ -32,7 +33,7 @@ export default function ProductDetailPage() {
   }
 
   const images = product.productImages ?? []
-  const displayUrl = activeImage ?? (images.length > 0 ? getPrimaryImage(images).imageUrl : null)
+  const displayUrl = activeImage ?? (images.length > 0 ? getImageUrl(getPrimaryImage(images).imageUrl) : null)
 
   const vehicleInfo = product.vehicle
     ? `${product.vehicle.name ?? ''} ${product.vehicle.model ?? ''}`.trim()
@@ -104,10 +105,10 @@ export default function ProductDetailPage() {
                 {images.map((img, i) => (
                   <button
                     key={i}
-                    className={`${styles.thumb} ${displayUrl === img.imageUrl ? styles.thumbActive : ''}`}
-                    onClick={() => setActiveImage(img.imageUrl)}
+                    className={`${styles.thumb} ${displayUrl === getImageUrl(img.imageUrl) ? styles.thumbActive : ''}`}
+                    onClick={() => setActiveImage(getImageUrl(img.imageUrl))}
                   >
-                    <img src={img.imageUrl} alt={`${product.name} ${i + 1}`} />
+                    <img src={getImageUrl(img.imageUrl) ?? ''} alt={`${product.name} ${i + 1}`} />
                   </button>
                 ))}
               </div>

@@ -40,5 +40,7 @@ public static class ServiceRegistrations
 
        services.AddScoped<IAboutUsReadRepository, AboutUsReadRepository>();
        services.AddScoped<IAboutUsWriteRepository, AboutUsWriteRepository>();
+
+       services.AddScoped<IProductImageWriteRepository, ProductImageWriteRepository>();
     }
 }
