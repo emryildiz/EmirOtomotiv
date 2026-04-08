@@ -24,6 +24,10 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .gallery {
+    position: static;
+  }
 }
 
 /* Gallery */

@@ -12,41 +12,52 @@ const links = [
   { to: '/admin/iletisim', label: 'İletişim', icon: '◌' },
 ]
 
-export function AdminSidebar() {
+interface Props {
+  open: boolean
+  onClose: () => void
+}
+
+export function AdminSidebar({ open, onClose }: Props) {
   const { data: user } = useMe()
   const { mutate: logout } = useLogout()
 
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.brand}>
-        <Link to="/" className={styles.logo}>
-          Emir<span>Otomotiv</span>
-        </Link>
-        <span className={styles.panel}>Admin Panel</span>
-      </div>
+    <>
+      {/* Overlay for mobile */}
+      {open && <div className={styles.overlay} onClick={onClose} />}
 
-      <nav className={styles.nav}>
-        {links.map(link => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            end={link.to === '/admin'}
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ''}`
-            }
-          >
-            <span className={styles.icon}>{link.icon}</span>
-            {link.label}
-          </NavLink>
-        ))}
-      </nav>
+      <aside className={`${styles.sidebar} ${open ? styles.sidebarOpen : ''}`}>
+        <div className={styles.brand}>
+          <Link to="/" className={styles.logo}>
+            Emir<span>Otomotiv</span>
+          </Link>
+          <span className={styles.panel}>Admin Panel</span>
+        </div>
 
-      <div className={styles.footer}>
-        {user && <p className={styles.username}>{user.username}</p>}
-        <button className={styles.logout} onClick={() => logout()}>
-          Çıkış Yap
-        </button>
-      </div>
-    </aside>
+        <nav className={styles.nav}>
+          {links.map(link => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === '/admin'}
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              <span className={styles.icon}>{link.icon}</span>
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className={styles.footer}>
+          {user && <p className={styles.username}>{user.username}</p>}
+          <button className={styles.logout} onClick={() => logout()}>
+            Çıkış Yap
+          </button>
+        </div>
+      </aside>
+    </>
   )
 }

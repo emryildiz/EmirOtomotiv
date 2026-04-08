@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { createBrowserRouter, Outlet, ScrollRestoration } from 'react-router-dom'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { lazy, Suspense } from 'react'
@@ -22,6 +22,7 @@ const AdminContact = lazy(() => import('@/features/admin/pages/AdminContact'))
 function RootLayout() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <ScrollRestoration />
       <Navbar />
       <main style={{ flex: 1 }}>
         <Suspense fallback={<LoadingSpinner />}>

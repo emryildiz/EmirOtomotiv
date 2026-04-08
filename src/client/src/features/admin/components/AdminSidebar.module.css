@@ -7,6 +7,8 @@
   height: 100vh;
   position: sticky;
   top: 0;
+  z-index: 100;
+  transition: transform 0.25s ease;
 }
 
 .brand {
@@ -100,4 +102,31 @@
   background-color: var(--color-accent);
   border-color: var(--color-accent);
   color: #fff;
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100dvh;
+    transform: translateX(-100%);
+    z-index: 200;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 199;
+  }
 }
