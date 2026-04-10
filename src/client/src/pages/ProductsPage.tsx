@@ -6,10 +6,10 @@ export default function ProductsPage() {
   return (
     <section className="section">
       <SEOMeta
-        title="Otobüs Yedek Parça Ürünleri – Depo Kapağı, Bagaj Kapağı, Akü Kapağı"
-        description="Prestij, Sultan ve Isuzu otobüsleri için depo kapağı, bagaj kapağı, akü kapağı ve karoser parçaları. Kategoriye göre filtreleyin, aradığınız parçayı hemen bulun."
+        title="Otobüs Yedek Parça Ürünleri – Depo Kapağı, Bagaj Kapağı, Akü Kapağı, Kapı Sistemi"
+        description="Prestij ve Sultan başta olmak üzere ticari araçlar için kendi atölyemizde üretilen depo kapağı, bagaj kapağı, akü kapağı ve kapı sistemleri. Aradığınız parçayı hemen bulun."
         canonical="/urunler"
-        keywords="otobüs yedek parça listesi, depo kapağı, bagaj kapağı, akü kapağı, karoser parça, Prestij yedek parça, Sultan yedek parça, Isuzu yedek parça"
+        keywords="otobüs yedek parça listesi, depo kapağı, bagaj kapağı, akü kapağı, kapı sistemi, Prestij yedek parça, Sultan yedek parça, ticari araç yedek parça"
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify({
@@ -24,7 +24,7 @@ export default function ProductsPage() {
       <div className="container">
         <h1 className="section-title">Ürünlerimiz</h1>
         <p className="section-subtitle">
-          Kategoriye göre filtreleyin, aradığınız parçayı bulun.
+          Kendi atölyemizde standartlara uygun ürettiğimiz parçaları keşfedin.
         </p>
         <ProductList />
       </div>

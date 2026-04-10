@@ -13,18 +13,18 @@ export default function HomePage() {
     <div>
       <SEOMeta
         title="Emir Otomotiv – Otobüs Yedek Parça İmalatı | emirotobusparca.com"
-        description="Prestij, Sultan ve Isuzu otobüsleri için orijinal kalite yedek parça imalatı. Depo kapağı, bagaj kapağı, akü kapağı ve karoser parçaları stoktan hızlı teslimat."
+        description="Prestij ve Sultan başta olmak üzere ticari araçlar için depo, akü ve bagaj kapakları ile kapı sistemleri. Kendi atölyemizde standartlara uygun üretim."
         canonical="/"
-        keywords="otobüs yedek parça, yedek parça imalatı, otobüs karoser parça, depo kapağı, bagaj kapağı, akü kapağı, Prestij otobüs, Sultan otobüs, Isuzu otobüs yedek parça"
+        keywords="otobüs yedek parça, yedek parça imalatı, otobüs karoser parça, depo kapağı, bagaj kapağı, akü kapağı, kapı sistemi, Prestij otobüs, Sultan otobüs yedek parça"
       />
       {/* Hero */}
       <section className={styles.hero}>
         <div className="container">
           <h1 className={styles.heroTitle}>
-            Otomotiv Yedek <span>Parça</span> Çözümleri
+            Otobüs Yedek <span>Parça</span> İmalatı
           </h1>
           <p className={styles.heroSub}>
-            Prestij, Sultan ve Isuzu araçları için orijinal kalite yedek parçalar.
+            Prestij ve Sultan başta olmak üzere ticari araçlar için kendi atölyemizde üretilen, sorunsuz montajlı ve uzun ömürlü parçalar.
           </p>
           <div className={styles.heroActions}>
             <Link to="/urunler" className="btn btn-primary">
@@ -41,7 +41,7 @@ export default function HomePage() {
       <section className="section">
         <div className="container">
           <h2 className="section-title">Öne Çıkan Ürünler</h2>
-          <p className="section-subtitle">Stoktan hızlı temin edilen parçalar</p>
+          <p className="section-subtitle">Kendi atölyemizden, standartlara uygun üretilmiş parçalar</p>
 
           {isLoading ? (
             <LoadingSpinner />
@@ -66,7 +66,7 @@ export default function HomePage() {
         <div className="container">
           <h2 className={styles.ctaTitle}>Aradığınız parçayı bulamadınız mı?</h2>
           <p className={styles.ctaSub}>
-            Uzman ekibimizle iletişime geçin, size en kısa sürede yardımcı olalım.
+            Atölyemizle iletişime geçin; depo, akü, bagaj kapakları ve kapı sistemlerinde size özel çözüm üretelim.
           </p>
           <Link to="/iletisim" className="btn btn-primary">
             İletişime Geç

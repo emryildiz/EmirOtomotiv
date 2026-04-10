@@ -24,7 +24,6 @@ const menuColumns = [
     links: [
       { to: '/urunler?q=prestij', label: 'Prestij' },
       { to: '/urunler?q=sultan', label: 'Sultan' },
-      { to: '/urunler?q=isuzu', label: 'Isuzu' },
     ],
   },
 ]
@@ -39,7 +38,7 @@ export function Footer() {
             Emir<span>Otomotiv</span>
           </Link>
           <p className={styles.tagline}>
-            Prestij, Sultan ve Isuzu araçları için<br />orijinal kalite yedek parçalar.
+            3 yıldır imalatçı kimliğiyle Prestij ve Sultan<br />başta olmak üzere ticari araçlara yedek parça üretiyoruz.
           </p>
         </div>
 
