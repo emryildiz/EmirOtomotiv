@@ -6,6 +6,7 @@ using EmirOtomotiv.Core.Application.Features.Products.Commands.Update;
 using EmirOtomotiv.Core.Application.Features.Products.Commands.UploadImages;
 using EmirOtomotiv.Core.Application.Features.Products.Queries.Get;
 using EmirOtomotiv.Core.Application.Features.Products.Queries.GetById;
+using EmirOtomotiv.Core.Application.Features.Products.Queries.GetBySlug;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,10 @@ public class ProductController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
         => Ok(await _mediator.Send(new GetProductByIdRequest { Id = id }));
+
+    [HttpGet("slug/{slug}")]
+    public async Task<IActionResult> GetBySlug(string slug)
+        => Ok(await _mediator.Send(new GetProductBySlugRequest { Slug = slug }));
 
     [Authorize]
     [HttpPost("create")]

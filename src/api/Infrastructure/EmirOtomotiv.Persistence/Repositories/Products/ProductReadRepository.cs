@@ -20,5 +20,14 @@ public class ProductReadRepository : ReadRepository<Product>, IProductReadReposi
 
         return product;
     }
+
+    public async Task<Product?> GetBySlugAsync(string slug)
+    {
+        return await this.Table
+            .Include(p => p.Category)
+            .Include(p => p.Vehicle)
+            .Include(p => p.ProductImages)
+            .FirstOrDefaultAsync(p => p.Slug == slug);
+    }
 }
 

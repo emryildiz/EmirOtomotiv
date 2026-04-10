@@ -11,6 +11,9 @@ export const productService = {
   getById: (id: string) =>
     api.get<Product>(`/api/products/${id}`).then(r => r.data),
 
+  getBySlug: (slug: string) =>
+    api.get<Product>(`/api/products/slug/${slug}`).then(r => r.data),
+
   create: (data: CreateProductDto) =>
     api.post('/api/products/create', data),
 

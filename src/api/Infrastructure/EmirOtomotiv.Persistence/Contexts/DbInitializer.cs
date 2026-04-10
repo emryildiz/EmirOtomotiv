@@ -1,3 +1,4 @@
+using EmirOtomotiv.Core.Application.Common.Helpers;
 using EmirOtomotiv.Core.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -88,19 +89,31 @@ public static class DbInitializer
         context.Vehicles.AddRange(vehicles);
         context.SaveChanges();
 
-        var products = new Product[]
+        var productDefs = new (string Name, string Desc, string No, int Cat, int Veh)[]
         {
-            new Product { Id = Guid.NewGuid(), Name = "Prestij Depo Kapağı", Description = "Prestij aracı için depo kapağı", ProductNumber = "PR-DK-01", Category = categories[0], Vehicle = vehicles[0], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Sultan Bagaj Kapağı", Description = "Sultan aracı için bagaj kapağı", ProductNumber = "SL-BK-01", Category = categories[1], Vehicle = vehicles[1], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Isuzu Akü Kapağı", Description = "Isuzu aracı için akü kapağı", ProductNumber = "IS-AK-01", Category = categories[2], Vehicle = vehicles[2], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Sultan Depo Kapağı", Description = "Sultan aracı için depo kapağı", ProductNumber = "SL-DK-02", Category = categories[0], Vehicle = vehicles[1], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Isuzu Bagaj Kapağı", Description = "Isuzu aracı için bagaj kapağı", ProductNumber = "IS-BK-02", Category = categories[1], Vehicle = vehicles[2], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Prestij Akü Kapağı", Description = "Prestij aracı için akü kapağı", ProductNumber = "PR-AK-02", Category = categories[2], Vehicle = vehicles[0], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Prestij Bagaj Kapağı", Description = "Prestij aracı için bagaj kapağı", ProductNumber = "PR-BK-03", Category = categories[1], Vehicle = vehicles[0], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Sultan Akü Kapağı", Description = "Sultan aracı için akü kapağı", ProductNumber = "SL-AK-03", Category = categories[2], Vehicle = vehicles[1], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Isuzu Depo Kapağı", Description = "Isuzu aracı için depo kapağı", ProductNumber = "IS-DK-03", Category = categories[0], Vehicle = vehicles[2], CreatedAt = DateTime.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Sultan Yedek Bagaj Kapağı", Description = "Sultan aracı için yedek bagaj kapağı", ProductNumber = "SL-BK-04", Category = categories[1], Vehicle = vehicles[1], CreatedAt = DateTime.UtcNow }
+            ("Prestij Depo Kapağı",       "Prestij aracı için depo kapağı",        "PR-DK-01", 0, 0),
+            ("Sultan Bagaj Kapağı",       "Sultan aracı için bagaj kapağı",         "SL-BK-01", 1, 1),
+            ("Isuzu Akü Kapağı",          "Isuzu aracı için akü kapağı",            "IS-AK-01", 2, 2),
+            ("Sultan Depo Kapağı",        "Sultan aracı için depo kapağı",          "SL-DK-02", 0, 1),
+            ("Isuzu Bagaj Kapağı",        "Isuzu aracı için bagaj kapağı",          "IS-BK-02", 1, 2),
+            ("Prestij Akü Kapağı",        "Prestij aracı için akü kapağı",          "PR-AK-02", 2, 0),
+            ("Prestij Bagaj Kapağı",      "Prestij aracı için bagaj kapağı",        "PR-BK-03", 1, 0),
+            ("Sultan Akü Kapağı",         "Sultan aracı için akü kapağı",           "SL-AK-03", 2, 1),
+            ("Isuzu Depo Kapağı",         "Isuzu aracı için depo kapağı",           "IS-DK-03", 0, 2),
+            ("Sultan Yedek Bagaj Kapağı", "Sultan aracı için yedek bagaj kapağı",   "SL-BK-04", 1, 1),
         };
+
+        var products = productDefs.Select(d => new Product
+        {
+            Id = Guid.NewGuid(),
+            Name = d.Name,
+            Slug = SlugHelper.Generate(d.Name),
+            Description = d.Desc,
+            ProductNumber = d.No,
+            Category = categories[d.Cat],
+            Vehicle = vehicles[d.Veh],
+            CreatedAt = DateTime.UtcNow,
+        }).ToArray();
 
         context.Products.AddRange(products);
         context.SaveChanges();

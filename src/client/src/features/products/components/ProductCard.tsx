@@ -17,7 +17,7 @@ export function ProductCard({ product }: Props) {
   const imageUrl = getPrimaryImage(product)
 
   return (
-    <Link to={`/urunler/${product.id}`} className={`card ${styles.card}`}>
+    <Link to={`/urunler/${product.slug}`} className={`card ${styles.card}`}>
       <div className={styles.imageWrapper}>
         {imageUrl ? (
           <img src={imageUrl} alt={product.name} className={styles.image} />

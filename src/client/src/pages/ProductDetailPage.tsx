@@ -13,8 +13,8 @@ function getPrimaryImage(images: ProductImage[]): ProductImage {
 }
 
 export default function ProductDetailPage() {
-  const { id } = useParams<{ id: string }>()
-  const { data: product, isLoading, isError } = useProduct(id ?? '')
+  const { slug } = useParams<{ slug: string }>()
+  const { data: product, isLoading, isError } = useProduct(slug ?? '')
   const [activeImage, setActiveImage] = useState<string | null>(null)
 
   if (isLoading) return <LoadingSpinner />
@@ -54,7 +54,7 @@ export default function ProductDetailPage() {
       <SEOMeta
         title={`${product.name} – ${vehicleInfo || 'Otobüs Yedek Parça'}`}
         description={seoDescription}
-        canonical={`/urunler/${product.id}`}
+        canonical={`/urunler/${product.slug}`}
         keywords={`${product.name}, ${vehicleInfo} yedek parça, otobüs yedek parça, ${product.category?.name ?? ''}`}
       />
       <Helmet>
@@ -78,7 +78,7 @@ export default function ProductDetailPage() {
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://emirotobusparca.com/" },
             { "@type": "ListItem", "position": 2, "name": "Ürünler", "item": "https://emirotobusparca.com/urunler" },
-            { "@type": "ListItem", "position": 3, "name": product.name, "item": `https://emirotobusparca.com/urunler/${product.id}` }
+            { "@type": "ListItem", "position": 3, "name": product.name, "item": `https://emirotobusparca.com/urunler/${product.slug}` }
           ]
         })}</script>
       </Helmet>

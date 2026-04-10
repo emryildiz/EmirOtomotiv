@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       { path: '/urunler', element: <ProductsPage /> },
-      { path: '/urunler/:id', element: <ProductDetailPage /> },
+      { path: '/urunler/:slug', element: <ProductDetailPage /> },
       { path: '/hakkimizda', element: <AboutPage /> },
       { path: '/iletisim', element: <ContactPage /> },
       { path: '/login', element: <LoginPage /> },

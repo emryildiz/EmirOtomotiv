@@ -1,3 +1,4 @@
+using EmirOtomotiv.Core.Application.Common.Helpers;
 using EmirOtomotiv.Core.Application.Repositories.Products;
 using MediatR;
 
@@ -18,6 +19,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductRequest>
     {
         var product = await _readRepository.GetByIdAsync(request.Id);
         product.Name = request.Name;
+        product.Slug = SlugHelper.Generate(request.Name);
         product.Description = request.Description;
         _writeRepository.Update(product);
         await _writeRepository.SaveChangesAsync();

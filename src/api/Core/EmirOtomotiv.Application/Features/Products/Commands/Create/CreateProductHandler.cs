@@ -1,4 +1,5 @@
 using Core.EmirOtomotiv.Application.Repositories.Categories;
+using EmirOtomotiv.Core.Application.Common.Helpers;
 using EmirOtomotiv.Core.Application.Repositories.Products;
 using EmirOtomotiv.Core.Application.Repositories.Vehicles;
 using EmirOtomotiv.Core.Domain.Entities;
@@ -30,6 +31,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductRequest>
         var product = new Product
         {
             Name = request.Name,
+            Slug = SlugHelper.Generate(request.Name),
             Description = request.Description,
             Vehicle = vehicle,
             Category = category,

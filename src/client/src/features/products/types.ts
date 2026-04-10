@@ -9,6 +9,7 @@ export interface ProductImage {
 export interface Product {
   id: string
   name: string
+  slug: string
   description: string
   productNumber: string
   vehicle: VehicleDto
