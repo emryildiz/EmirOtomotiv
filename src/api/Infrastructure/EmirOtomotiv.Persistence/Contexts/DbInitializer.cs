@@ -38,9 +38,9 @@ public static class DbInitializer
             context.Contacts.Add(new Contact
             {
                 Id = Guid.NewGuid(),
-                Description = "Prestij, Sultan ve Isuzu araçları için orijinal kalite yedek parça tedarikçisi. 15 yılı aşkın sektör deneyimimizle müşterilerimize en hızlı ve güvenilir hizmeti sunmaktayız.",
-                Adress = "Organize Sanayi Bölgesi, Metalürji Cad. No:42, Şahinbey / Gaziantep",
-                PhoneNumber = "+90 342 555 08 19",
+                Description = "Emir Otomotiv, 3 yıldır imalatçı kimliğiyle Prestij ve Sultan başta olmak üzere ticari araçlara yedek parça üretiyor.",
+                Adress = "Veysel Karani Mh. 3.Erdal Sk. No : 1 Osmangazi / BURSA",
+                PhoneNumber = "+90 538 028 60 17",
                 WorkingHours = "Pazartesi - Cumartesi: 08:30 - 18:30",
                 Mail = "info@emirotomotiv.com",
                 CreatedAt = DateTime.UtcNow,
@@ -53,7 +53,7 @@ public static class DbInitializer
             context.AboutUs.Add(new AboutUs
             {
                 Id = Guid.NewGuid(),
-                Description = "Emir Otomotiv, 2008 yılında Gaziantep'te kurulmuş olup Prestij, Sultan ve Isuzu araç markalarına özel yedek parça üretimi ve tedariki konusunda öncü bir firmadır. Kalite belgeleri ve ISO standartlarına uygun üretim süreçlerimizle yurt içi ve yurt dışı pazarda güvenilir bir tedarikçi konumundayız. Deneyimli ekibimiz, müşterilerimize satış sonrası teknik destek ve danışmanlık hizmeti de sunmaktadır.",
+                Description = "Emir Otomotiv, 3 yıldır otobüs yedek parça sektöründe imalatçı kimliğiyle fark yaratmaktadır. Prestij ve Sultan başta olmak üzere, ticari araçların ihtiyaç duyduğu depo, akü ve bagaj kapakları ile kapı sistemlerini kendi atölyemizde, standartlara uygun şekilde üretiyoruz.\n\nKaliteli ham madde ve kusursuz işçiliği odağımıza alarak, araçlarınızın değerini ve performansını koruyan yedek parçalar tasarlıyoruz. Sektördeki 3. yılımızda da \"sorunsuz montaj ve uzun ömürlü kullanım\" sözümüzün arkasında durarak üretmeye devam ediyoruz.",
                 ImageUrl = "https://images.unsplash.com/photo-1632823471406-4c5c7e4c6f24?w=900&auto=format&fit=crop",
                 CreatedAt = DateTime.UtcNow,
             });
@@ -121,7 +121,6 @@ public static class DbInitializer
         var users = new List<User>()
         {
             new User() { Username = "emre", PasswordHash = passwordHasher.Hash("EmirOto@2024!"), IsActive = true, Role = "admin", CreatedAt = DateTime.UtcNow },
-            new User() { Username = "user", PasswordHash = passwordHasher.Hash("User@Oto#2024"), IsActive = true, Role = "user", CreatedAt = DateTime.UtcNow }
         };
         context.Users.AddRange(users);
         context.SaveChanges();
