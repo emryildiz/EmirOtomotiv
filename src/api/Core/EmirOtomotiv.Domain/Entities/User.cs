@@ -9,4 +9,5 @@ public class User : BaseEntity
     public DateTime? RefreshTokenExpiryTime { get; set; }
     public bool IsActive { get; set; } = true;
     public bool IsOnLeave { get; set; } = false;
+    public bool MustChangePassword { get; set; } = false;
 }

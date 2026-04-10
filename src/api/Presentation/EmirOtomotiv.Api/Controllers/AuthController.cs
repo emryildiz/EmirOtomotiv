@@ -1,5 +1,6 @@
 
 using System.Security.Claims;
+using EmirOtomotiv.Core.Application.Features.Auth.Commands.ChangePassword;
 using EmirOtomotiv.Core.Application.Features.Auth.Commands.Login;
 using EmirOtomotiv.Core.Application.Features.Auth.Queries.GetMe;
 using MediatR;
@@ -45,6 +46,20 @@ public class AuthController : ControllerBase
         this.SetRefreshToken(response.RefreshToken, response.RefreshTokenExpiry);
         this.SetRole(response.Role);
         return this.Ok(response);
+    }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        Claim? userIdClaim = this.User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim is null)
+            return Unauthorized();
+
+        request.UserId = userIdClaim.Value;
+        await this._mediator.Send(request);
+        return this.Ok();
     }
 
     [HttpPost("logout")]

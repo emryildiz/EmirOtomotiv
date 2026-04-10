@@ -8,4 +8,5 @@ public class LoginResponse
     public DateTime RefreshTokenExpiry { get; set; }
     
     public string Role { get; set; }
+    public bool MustChangePassword { get; set; }
 }

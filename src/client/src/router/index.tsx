@@ -20,6 +20,7 @@ const AdminVehicles = lazy(() => import('@/features/admin/pages/AdminVehicles'))
 const AdminAbout = lazy(() => import('@/features/admin/pages/AdminAbout'))
 const AdminContact = lazy(() => import('@/features/admin/pages/AdminContact'))
 const AdminVisits = lazy(() => import('@/features/admin/pages/AdminVisits'))
+const AdminChangePassword = lazy(() => import('@/features/admin/pages/AdminChangePassword'))
 
 function RootLayout() {
   useTrackVisit()
@@ -64,6 +65,7 @@ export const router = createBrowserRouter([
       { path: '/admin/hakkimizda', element: <AdminAbout /> },
       { path: '/admin/iletisim', element: <AdminContact /> },
       { path: '/admin/ziyaretciler', element: <AdminVisits /> },
+      { path: '/admin/sifre-degistir', element: <AdminChangePassword /> },
     ],
   },
 ])

@@ -38,7 +38,8 @@ public class LoginHandler : IRequestHandler<LoginRequest, LoginResponse>
             Token = this._jwtTokenGenerator.GenerateToken(user),
             RefreshToken = this._jwtTokenGenerator.GenerateRefreshToken(),
             Role = user.Role,
-            RefreshTokenExpiry = refreshTokenExpiry
+            RefreshTokenExpiry = refreshTokenExpiry,
+            MustChangePassword = user.MustChangePassword
         };
 
         user.RefreshToken = response.RefreshToken;

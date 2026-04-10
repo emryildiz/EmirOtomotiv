@@ -9,6 +9,7 @@ export interface LoginResponse {
   refreshToken: string
   refreshTokenExpiry: string
   role: string
+  mustChangePassword: boolean
 }
 
 export interface MeResponse {

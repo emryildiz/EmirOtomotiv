@@ -17,7 +17,11 @@ export function LoginForm() {
       { username, password, rememberMe },
       { onSuccess: (data) => {
           localStorage.setItem('token', data.token)
-          navigate(data.role === 'admin' ? '/admin' : '/')
+          if (data.mustChangePassword) {
+            navigate('/admin/sifre-degistir')
+          } else {
+            navigate(data.role === 'admin' ? '/admin' : '/')
+          }
         }
       },
     )

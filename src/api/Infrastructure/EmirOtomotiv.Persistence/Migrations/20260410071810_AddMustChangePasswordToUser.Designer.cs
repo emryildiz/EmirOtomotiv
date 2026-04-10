@@ -3,6 +3,7 @@ using System;
 using EmirOtomotiv.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmirOtomotiv.Persistence.Migrations
 {
     [DbContext(typeof(EmirOtomotivDbContext))]
-    partial class EmirOtomotivDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260410071810_AddMustChangePasswordToUser")]
+    partial class AddMustChangePasswordToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
